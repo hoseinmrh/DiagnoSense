@@ -479,12 +479,12 @@ explanation = new_predictor.explain_prediction(user_input_df)
 #
 # # Print the explanation
 #
-# new_predictor.print_explanation(explanation)
+new_predictor.print_explanation(explanation)
 #
 # # If you want to see the actual disease for this row (for comparison)
 # actual_disease = train_y.iloc[1]
 # print(f"\nActual Disease: {actual_disease}")
 #
 # # If you want to get just the raw prediction without explanation
-# prediction = new_predictor.model.predict(second_row)[0]
-# print(f"Raw Prediction: {prediction}")
+prediction = new_predictor.model.predict(user_input_df)[0]
+print(f"Raw Prediction: {prediction}")
