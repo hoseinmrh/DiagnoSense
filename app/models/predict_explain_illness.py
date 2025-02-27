@@ -331,7 +331,6 @@ class DiseasePredictor:
 
         return cm_df
 
-
     def create_model_input(self, symptoms_list, model_feature_names=None):
         """
         Create a DataFrame with the correct feature names for the trained model.
