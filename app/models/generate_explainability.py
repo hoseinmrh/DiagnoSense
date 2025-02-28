@@ -9,6 +9,7 @@ import os
 from match_symptoms import MatchSymptoms
 from disease_predictor import DiseasePredictor
 import pandas as pd
+import markdown
 
 
 class GenerateExplainability:
@@ -44,6 +45,8 @@ Please create a clear, compassionate explanation that:
 5. Reminds the patient that this is an AI-generated assessment and they should consult a healthcare professional
 
 Use conversational language that a non-medical person would understand. Avoid technical jargon and use analogies where helpful.
+
+Give the output in a well defined Markdown format with proper user of bullet points, tables and etc.
 """
 
     def setup_llm(self):
@@ -111,26 +114,29 @@ Use conversational language that a non-medical person would understand. Avoid te
         return self.generate_human_explanation(explanation_dict, patient_symptoms)
 
 
-match_symptoms_model = MatchSymptoms(user_description="I have headache all the time and when I try to wake up, I feel "
-                                                      "dizzy")
-user_symptoms = match_symptoms_model.run()
+# match_symptoms_model = MatchSymptoms(user_description="I have headache all the time and when I try to wake up, I feel "
+#                                                       "dizzy")
+# user_symptoms = match_symptoms_model.run()
+#
+# train_df = pd.read_csv('../public/training_data.csv')
+# train_x = train_df.iloc[:, 0:132]  # Symptoms
+# train_y = train_df.iloc[:, 132]    # Disease labels
+#
+# new_predictor = DiseasePredictor()
+# new_predictor.load_model()
+#
+# new_predictor.feature_names = train_x.columns.tolist()
+# model_feature_names = new_predictor.feature_names
+#
+# user_input_df = new_predictor.create_model_input(user_symptoms, model_feature_names)
+#
+# explanation = new_predictor.explain_prediction(user_input_df)
+#
+# generate_explainability_model = GenerateExplainability()
+# result = generate_explainability_model.run(explanation, user_symptoms)
+#
+# with open("result.md" , "w") as result_file:
+#     result_file.write(result)
 
-train_df = pd.read_csv('../public/training_data.csv')
-train_x = train_df.iloc[:, 0:132]  # Symptoms
-train_y = train_df.iloc[:, 132]    # Disease labels
 
-new_predictor = DiseasePredictor()
-new_predictor.load_model()
-
-new_predictor.feature_names = train_x.columns.tolist()
-model_feature_names = new_predictor.feature_names
-
-user_input_df = new_predictor.create_model_input(user_symptoms, model_feature_names)
-
-explanation = new_predictor.explain_prediction(user_input_df)
-
-generate_explainability_model = GenerateExplainability()
-result = generate_explainability_model.run(explanation, user_symptoms)
-
-print(result)
 
