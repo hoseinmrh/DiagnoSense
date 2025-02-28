@@ -421,11 +421,11 @@ class DiseasePredictor:
         return input_df
 
 
-
+'''
 # Example usage:
 
 # Create the predictor
-predictor = DiseasePredictor()
+# predictor = DiseasePredictor()
 
 ## Train the model (assuming train_df is already loaded)
 train_df = pd.read_csv('../public/training_data.csv')
@@ -487,3 +487,4 @@ new_predictor.print_explanation(explanation)
 # # If you want to get just the raw prediction without explanation
 prediction = new_predictor.model.predict(user_input_df)[0]
 print(f"Raw Prediction: {prediction}")
+'''

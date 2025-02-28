@@ -86,5 +86,5 @@ class MatchSymptoms:
             print(f"Error: Could not parse the output as a list. Output was: {list_string}")
 
 
-model = MatchSymptoms(user_description="My chest heard and I can not breath very well")
-model.run()
+# model = MatchSymptoms(user_description="My chest heard and I can not breath very well")
+# model.run()
