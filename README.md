@@ -1,6 +1,6 @@
 # DiagnoSense
 
----
+
 ## Introduction
 
 Machine learning models are increasingly used in healthcare, but their predictions often lack transparency. This project aims to enhance **ML explainability** by developing an interpretable disease prediction model.  
