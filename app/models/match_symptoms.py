@@ -3,7 +3,6 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers import ResponseSchema
 from langchain.output_parsers import StructuredOutputParser
 import ast
-import getpass
 from dotenv import load_dotenv
 import os
 
@@ -83,7 +82,7 @@ class MatchSymptoms:
             print(ast.literal_eval(response_list_string))
             return ast.literal_eval(response_list_string)
         except (SyntaxError, ValueError):
-            print(f"Error: Could not parse the output as a list. Output was: {list_string}")
+            print(f"Error: Could not parse the output as a list. Output was: {response_list_string}")
 
 
 # model = MatchSymptoms(user_description="My chest heard and I can not breath very well")
