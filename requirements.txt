@@ -9,3 +9,4 @@ langchain
 dotenv
 langchain_google_genai
 fpdf
+markdown
