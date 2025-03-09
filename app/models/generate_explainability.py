@@ -1,15 +1,12 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
-from langchain.output_parsers import ResponseSchema
-from langchain.output_parsers import StructuredOutputParser
-import ast
-import getpass
 from dotenv import load_dotenv
 import os
 from match_symptoms import MatchSymptoms
 from disease_predictor import DiseasePredictor
 import pandas as pd
 import markdown
+from fpdf import FPDF
 
 
 class GenerateExplainability:
@@ -109,31 +106,58 @@ Give the output in a well defined Markdown format with proper user of bullet poi
         response = self.llm.invoke(messages)
         return response.content
 
+    def save_explanation_as_pdf(self, explanation_markdown, filename="explanation.pdf"):
+        """
+        Convert the explanation from Markdown to PDF and save it.
+
+        Args:
+            explanation_markdown: The explanation in Markdown format
+            filename: The name of the PDF file to save
+        """
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_auto_page_break(auto=True, margin=15)
+        pdf.set_font("Arial", size=12)
+
+        # Convert Markdown to plain text
+        explanation_text = markdown.markdown(explanation_markdown)
+        explanation_text = explanation_text.replace('<p>', '').replace('</p>', '\n')
+
+        # Add text to PDF
+        for line in explanation_text.split('\n'):
+            pdf.multi_cell(0, 10, line.encode('latin-1', 'replace').decode('latin-1'))
+
+        # Save the PDF to the public folder
+        pdf.output(f"../public/{filename}")
+        print(f"PDF saved as {filename}")
+
     def run(self, explanation_dict, patient_symptoms):
         self.setup_llm()
-        return self.generate_human_explanation(explanation_dict, patient_symptoms)
+        explanation_markdown = self.generate_human_explanation(explanation_dict, patient_symptoms)
+        self.save_explanation_as_pdf(explanation_markdown)
+        return explanation_markdown
 
 
-# match_symptoms_model = MatchSymptoms(user_description="I have headache all the time and when I try to wake up, I feel "
-#                                                       "dizzy")
-# user_symptoms = match_symptoms_model.run()
-#
-# train_df = pd.read_csv('../public/training_data.csv')
-# train_x = train_df.iloc[:, 0:132]  # Symptoms
-# train_y = train_df.iloc[:, 132]    # Disease labels
-#
-# new_predictor = DiseasePredictor()
-# new_predictor.load_model()
-#
-# new_predictor.feature_names = train_x.columns.tolist()
-# model_feature_names = new_predictor.feature_names
-#
-# user_input_df = new_predictor.create_model_input(user_symptoms, model_feature_names)
-#
-# explanation = new_predictor.explain_prediction(user_input_df)
-#
-# generate_explainability_model = GenerateExplainability()
-# result = generate_explainability_model.run(explanation, user_symptoms)
+match_symptoms_model = MatchSymptoms(user_description="I have headache all the time and when I try to wake up, I feel "
+                                                      "dizzy")
+user_symptoms = match_symptoms_model.run()
+
+train_df = pd.read_csv('../public/training_data.csv')
+train_x = train_df.iloc[:, 0:132]  # Symptoms
+train_y = train_df.iloc[:, 132]    # Disease labels
+
+new_predictor = DiseasePredictor()
+new_predictor.load_model()
+
+new_predictor.feature_names = train_x.columns.tolist()
+model_feature_names = new_predictor.feature_names
+
+user_input_df = new_predictor.create_model_input(user_symptoms, model_feature_names)
+
+explanation = new_predictor.explain_prediction(user_input_df)
+
+generate_explainability_model = GenerateExplainability()
+result = generate_explainability_model.run(explanation, user_symptoms)
 #
 # with open("result.md" , "w") as result_file:
 #     result_file.write(result)

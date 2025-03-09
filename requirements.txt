@@ -7,3 +7,5 @@ seaborn
 shap
 langchain
 dotenv
+langchain_google_genai
+fpdf
